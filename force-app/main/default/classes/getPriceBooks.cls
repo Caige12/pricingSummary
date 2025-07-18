@@ -155,9 +155,9 @@ public with sharing class getPriceBooks {
         list<pricebookentry> check = Database.query(find);
         return check; 
     }
+    
     @auraEnabled
-    public static string savePBE(list<pricebookentry> entries){
-        string messBack;
+    public static savePBE(list<pricebookentry> entries){
         if (entries == null || entries.isEmpty()) {
             // Checks if priceBookEntry is Empty and return Error
             return new SavePBEResponse('error','No entries provided.');
@@ -174,7 +174,7 @@ public with sharing class getPriceBooks {
                     }
                 }
             }
-            // Error List
+            // Checks For any errors that slipped and return 
             if (errors.isEmpty()) {
                 return new SavePBEResponse('success', 'All entries saved.');
             } else {
@@ -184,9 +184,7 @@ public with sharing class getPriceBooks {
             system.debug(e);
             //returns message with Wrapper
             return new SavePBEResponse('error', e.getMessage());
-        }
- 
-        return errors; 
+        } 
     }
     public with sharing class pricingWrapper{
         @AuraEnabled 
