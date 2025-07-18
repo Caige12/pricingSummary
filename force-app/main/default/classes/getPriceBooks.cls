@@ -186,7 +186,7 @@ public with sharing class getPriceBooks {
             return new SavePBEResponse('error', e.getMessage());
         }
  
-        return messBack; 
+        return errors; 
     }
     public with sharing class pricingWrapper{
         @AuraEnabled 
