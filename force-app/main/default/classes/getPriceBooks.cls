@@ -155,7 +155,7 @@ public with sharing class getPriceBooks {
         list<pricebookentry> check = Database.query(find);
         return check; 
     }
-    
+
     @auraEnabled
     public static savePBE(list<pricebookentry> entries){
         if (entries == null || entries.isEmpty()) {
@@ -186,6 +186,17 @@ public with sharing class getPriceBooks {
             return new SavePBEResponse('error', e.getMessage());
         } 
     }
+    public with sharing class SavePBEResponse {
+    @AuraEnabled
+    public String status { get; set; }
+    
+    @AuraEnabled
+    public String message { get; set; }
+    
+    @AuraEnabled
+    public List<String> errors { get; set; }
+    }
+    
     public with sharing class pricingWrapper{
         @AuraEnabled 
         public list<AggregateResult> open {get; set;}
