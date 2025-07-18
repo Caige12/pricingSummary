@@ -158,7 +158,15 @@ public with sharing class getPriceBooks {
     @auraEnabled
     public static string savePBE(list<pricebookentry> entries){
         string messBack;
+        if (entries == null || entries.isEmpty()) {
+            // Checks if priceBookEntry is Empty and return Error
+            return new SavePBEResponse('error','No entries provided.');
+        }
+        // List of Errors
+        List<String> errors = new List<String>();
+
         try{
+            Database.SaveResult[] 
             if(entries.size()>0){
             	upsert entries;    
             }
