@@ -162,18 +162,28 @@ public with sharing class getPriceBooks {
             // Checks if priceBookEntry is Empty and return Error
             return new SavePBEResponse('error','No entries provided.');
         }
-        // List of Errors
+        // List of Errors, replaces MessBack return from Older Class
         List<String> errors = new List<String>();
 
         try{
-            Database.SaveResult[] 
-            if(entries.size()>0){
-            	upsert entries;    
+            Database.SaveResult[] results = Database.upsert(entries, false);
+            for (Integer i = 0; i < results.size(); i++) {
+                if (!results[i].isSuccess()) {
+                    for (Database.Error err : results[i].getErrors()) {
+                        errors.add('Row ' + i + ': ' + err.getMessage());
+                    }
+                }
             }
-            messBack = 'success'; 
-        }catch(exception e){
+            // Error List
+            if (errors.isEmpty()) {
+                return new SavePBEResponse('success', 'All entries saved.');
+            } else {
+                return new SavePBEResponse('Catch Error', 'Some entries failed to save.', errors);
+            } 
+        } catch(exception e){
             system.debug(e);
-          messBack = string.valueof(e);
+            //returns message with Wrapper
+            return new SavePBEResponse('error', e.getMessage());
         }
  
         return messBack; 
