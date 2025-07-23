@@ -164,7 +164,6 @@ public with sharing class getPriceBooks {
         }
         // List of Errors, replaces MessBack return from Older Class
         List<String> errors = new List<String>();
-
         try{
             Database.SaveResult[] results = Database.upsert(entries, false);
             for (Integer i = 0; i < results.size(); i++) {
@@ -175,8 +174,9 @@ public with sharing class getPriceBooks {
                 }
             }
             // Checks For any errors that slipped and return 
+            //### Rework StrongType of Wrapper ###
             if (errors.isEmpty()) {
-                return new SavePBEResponse('success', 'All entries saved.');
+                return new SavePBEResponse('success');
             } else {
                 return new SavePBEResponse('Catch Error', 'Some entries failed to save.', errors);
             } 
@@ -196,7 +196,7 @@ public with sharing class getPriceBooks {
     @AuraEnabled
     public List<String> errors { get; set; }
     }
-    
+
     public with sharing class pricingWrapper{
         @AuraEnabled 
         public list<AggregateResult> open {get; set;}
