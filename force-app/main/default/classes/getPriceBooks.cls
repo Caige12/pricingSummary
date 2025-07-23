@@ -176,9 +176,11 @@ public with sharing class getPriceBooks {
             // Checks For any errors that slipped and return 
             //### Rework StrongType of Wrapper ###
             if (errors.isEmpty()) {
-                return new SavePBEResponse('success');
+                SavePBEResponse.status = 'success';
+                SavePBEResponse.message = 'All entries saved!';
+
             } else {
-                return new SavePBEResponse('Catch Error', 'Some entries failed to save.', errors);
+                
             } 
         } catch(exception e){
             system.debug(e);
