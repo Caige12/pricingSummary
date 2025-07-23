@@ -8,13 +8,18 @@ static void Test_SavePBE_Error() {
         ProductCode = 'TEST123',
         IsActive = true,
         Product_Status__c = 'Stock',
-        Subcategory__c = 'Chemicals-QuickSilver',
+        //Subcategory__c = '---',
+        //Go to Product2 Page in Setup to replace
         Product_Family__c = 'T123',
         Floor_Type__c = 'Floor',
         Floor_Price__c = 99.99
     );
     insert prod;
-
+    
+    id priceBookStandard = Test.getStandardPricebookId();
+    //Standard PriceBook Entry
+    PriceBookEntry StandardPriceBookEntry = new PriceBookEntry(PriceBook2Id = priceBookStandard, Product2Id = prod.id, unitprice = 90, IsActive = True, UseStandardPrice=False);
+    insert StandardPriceBookEntry;
     //Setup pricebook
     Pricebook2 priceBook = new Pricebook2(Name = 'Custom_PriceBook', IsActive = true);
     insert priceBook;
