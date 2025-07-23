@@ -1,7 +1,7 @@
 @isTest
 public class test_getPriceBooks_CR {
 @isTest
-static void Test_SavePBE() {
+static void Test_SavePBE_Error() {
     //Temp Product
     Product2 product= new Product2(
         name = 'Products',
@@ -28,7 +28,7 @@ static void Test_SavePBE() {
         UseStandardPrice = false
     );
     //Creates second PricebookEntry for checking partial duplication
-    PricebookEntry pbe2 = new PricebookEntry(
+    PricebookEntry priceBookEntry2 = new PricebookEntry(
         Product2Id = prod.Id,
         Pricebook2Id = pb.Id,
         UnitPrice = 110,
@@ -36,17 +36,19 @@ static void Test_SavePBE() {
         UseStandardPrice = false
     );
     // List the entries
-    List<PricebookEntry> entries = new List<PricebookEntry>{ pbe1, pbe2 };
+    List<PricebookEntry> entries = new List<PricebookEntry>{priceBookEntry1, priceBookEntry2};
     //Start of the Test
     Test.startTest();
         SavePBEResponse result = getPriceBooks.savePBE(entries);
+        //If we need string return -> String response = PriceEntryController.savePBE(new List<PriceBookEntry>{priceBookEntry2});
     Test.stopTest();
-    System.assertNotEquals(null, result, 'Response should not be null');
-    System.assertNotEquals(null, result.status, 'Status should not be null');
-    System.assert(result.status == 'success' || result.status == 'partial error' || result.status == 'error', 'Status must be valid');
+    //Assert Testing
+    System.assertNotEquals(null, result, 'Results shouldnt be null');
+    System.assertNotEquals(null, result.status, 'Status shouldnt be null');
+    System.assert(result.status == 'success' || result.status == 'partial error' || result.status == 'error', 'Status needs to be Valid');
     
     if (result.status == 'partial error') {
-        System.assert(result.errors != null && result.errors.size() > 0, 'Partial should return errors');
+        System.assert(result.errors != null && result.errors.size() > 0, 'partial errors should return error');
     }
 }    
 }
