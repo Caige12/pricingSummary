@@ -40,7 +40,7 @@ static void Test_SavePBE_Error() {
     //Start of the Test
     Test.startTest();
         SavePBEResponse result = getPriceBooks.savePBE(entries);
-        //If we need string return -> String response = PriceEntryController.savePBE(new List<PriceBookEntry>{priceBookEntry2});
+        //If we need string return -> String response = getPriceBooks.savePBE(new List<PriceBookEntry>{priceBookEntry2});
     Test.stopTest();
     //Assert Testing
     System.assertNotEquals(null, result, 'Results shouldnt be null');
