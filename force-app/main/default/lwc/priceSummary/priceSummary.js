@@ -107,55 +107,81 @@ export default class PriceSummary extends LightningElement {
         //     this.handleSearch()
         // }
     }
-    async addProduct(){
-        const result = await AddPriceBoookEntry.open({
-            size: 'medium',
-            description: 'Accessible description of modal\'s purpose',
-            content: 'Passed into content api',
-        }).then((res)=>{
-            const recordInputs = res.slice().map(draft =>{
+    async addProduct() {
+        try {
+            const result = await AddPriceBoookEntry.open({
+                size: 'medium',
+                description: 'Accessible description of modal\'s purpose',
+                content: 'Passed into content api',
+            });
 
-                let Pricebook2Id = draft.Pricebook2Id;
-                let Product2Id = draft.Product2Id; 
-                let UseStandardPrice = false; 
-                let IsActive = draft.IsActive;
-                let UnitPrice = draft.UnitPrice;
-                let List_Margin__c = draft.List_Margin__c;
-                let Hold_Margin__c = draft.Hold_Margin__c;
-                const fields = {Pricebook2Id, Product2Id, UseStandardPrice, IsActive, UnitPrice, List_Margin__c, Hold_Margin__c}
-        
-            return fields;
-            })
-        
-            savePBE({entries: recordInputs})
-            .then((res)=>{
-                if(res === 'success'){
-                    this.dispatchEvent(
-                        new ShowToastEvent({
-                            title: 'Success',
-                            message: 'Ship It!',
-                            variant: 'success'
-                        })
-                    );
-                }
-                this.changesMade = false; 
-            }).catch(error => {
-                        console.log(error);
-                        
-                        // Handle error
-                        this.dispatchEvent(
-                            new ShowToastEvent({
-                                title: 'Margin Error',
-                                message: error.body.output.errors[0].message,
-                                variant: 'error'
-                            })
-                        )
+            if (result === 'close' || !result) return;
+
+            const recordInputs = result.map(draft => {
+                return {
+                    Pricebook2Id: draft.Pricebook2Id,
+                    Product2Id: draft.Product2Id,
+                    UseStandardPrice: false,
+                    IsActive: draft.IsActive,
+                    UnitPrice: draft.UnitPrice,
+                    List_Margin__c: draft.List_Margin__c,
+                    Hold_Margin__c: draft.Hold_Margin__c
+                };
+            });
+
+            const res = await savePBE({ entries: recordInputs });
+
+            if (res.status === 'success') {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'All entries saved successfully.',
+                        variant: 'success'
                     })
-        }).catch((error)=>{
-            console.error(error)
-        })
-       }
+                );
+            } else if (res.status === 'Catch Error') {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Partial Save',
+                        message: res.message,
+                        variant: 'warning'
+                    })
+                );
 
+            // Optional: Stretch Goal – show modal with res.errors[]
+            // if (res.errors?.length) {
+            //     await DuplicateModal.open({
+            //         size: 'medium',
+            //         description: 'Failed Entries',
+            //         content: {
+            //             duplicates: res.errors.map(e => ({ productName: '', errorMessage: e }))
+            //         }
+            //     });
+            // }
+
+            } else {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error',
+                        message: res.message || 'Unknown error occurred.',
+                        variant: 'error'
+                    })
+                );
+            }
+
+            this.changesMade = false;
+        } catch (error) {
+            console.error(error);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Apex Error',
+                    message: error.body?.message || 'Unknown Apex exception',
+                    variant: 'error'
+                })
+            );
+        }
+    }
+    
     handleClear(mess){
         let clearWhat = mess.detail; 
         switch(clearWhat){
