@@ -4,15 +4,13 @@ public class test_getPriceBooks_CR {
 static void Test_SavePBE_Error() {
     //Temp Product
     Product2 product= new Product2(
-        name = 'Products',
-        ProductCode = 'TEST123',
+        ProductName = 'TempProductName',
+        ProductCode = 'FS1008-QT',
+        ProductDescription = 'Empty',
         IsActive = true,
-        Product_Status__c = 'Stock',
-        //Subcategory__c = '---',
-        //Go to Product2 Page in Setup to replace
-        Product_Family__c = 'T123',
-        Floor_Type__c = 'Floor',
-        Floor_Price__c = 99.99
+        Product_Status = 'Stock',
+        Product_Family = 'T123',
+        Floor_Price = 99.99
     );
     insert prod;
     
