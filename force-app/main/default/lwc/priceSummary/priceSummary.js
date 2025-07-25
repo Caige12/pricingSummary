@@ -2,7 +2,9 @@ import { LightningElement } from 'lwc';
 import singlePicklist from '@salesforce/apex/lwcHelper.getPickListValues'; 
 import LightningAlert from 'lightning/alert';
 import AddPriceBoookEntry from 'c/addPriceBookEntry'; 
-import savePBE from '@salesforce/apex/getPriceBooks.savePBE';
+import savePBE from '@salesforce/apex/getPriceBooks_CR.savePBE';
+//Old method Below Caige's Methos Above
+//import savePBE from '@salesforce/apex/getPriceBooks.savePBE';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 export default class PriceSummary extends LightningElement {
     hideFilter = true;
