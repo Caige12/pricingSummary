@@ -180,7 +180,7 @@ public with sharing class getPriceBooks {
                 SavePBEResponse.message = 'All entries saved!';
 
             } else {
-                
+                SavePBEResponse.error = 'Not Valid Response!';
             } 
         } catch(exception e){
             system.debug(e);
