@@ -132,23 +132,23 @@ export default class PriceSummary extends LightningElement {
             });
 
             const res = await savePBE({ entries: recordInputs });
-
-            if (res.status === 'success') {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'All entries saved successfully.',
-                        variant: 'success'
-                    })
-                );
-            } else if (res.status === 'Catch Error') {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Partial Save',
-                        message: res.message,
-                        variant: 'warning'
-                    })
-                );
+            console.log(res);
+            // if (res.status === 'success') {
+            //     this.dispatchEvent(
+            //         new ShowToastEvent({
+            //             title: 'Success',
+            //             message: 'All entries saved successfully.',
+            //             variant: 'success'
+            //         })
+            //     );
+            // } else if (res.status === 'Catch Error') {
+            //     this.dispatchEvent(
+            //         new ShowToastEvent({
+            //             title: 'Partial Save',
+            //             message: res.message,
+            //             variant: 'warning'
+            //         })
+            //     );
 
             // Optional: Stretch Goal – show modal with res.errors[]
             // if (res.errors?.length) {
@@ -161,15 +161,15 @@ export default class PriceSummary extends LightningElement {
             //     });
             // }
 
-            } else {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error',
-                        message: res.message || 'Unknown error occurred.',
-                        variant: 'error'
-                    })
-                );
-            }
+            // } else {
+            //     this.dispatchEvent(
+            //         new ShowToastEvent({
+            //             title: 'Error',
+            //             message: res.message || 'Unknown error occurred.',
+            //             variant: 'error'
+            //         })
+            //     );
+            // }
 
             this.changesMade = false;
         } catch (error) {
